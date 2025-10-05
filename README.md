@@ -1,7 +1,7 @@
 # PEP Scan - Ferramenta para identificar possíveis benefícios indevidos recebidos por autoridades públicas
 
 <p align="center">
-  <img src="./static/images/arquitetura.png" alt="Arquitetura do projeto MECAI" width="600"/>
+  <img src="./static/images/arquitetura.png" alt="Arquitetura do projeto PEP Scan" width="600"/>
 </p>
 
 ## Visão Geral do Projeto
@@ -22,7 +22,7 @@ A aplicação é dividida em várias páginas, cada uma com um propósito espec�
 * **Análise de Relacionamentos**: A interface principal para a busca e exploração de redes de relacionamento. O usuário pode inserir o nome e o documento (CPF ou CNPJ) de uma entidade para visualizar suas conexões diretas em um grafo interativo. É possível expandir a análise clicando nos nós do grafo.
 * **Caminho Mais Curto**: Permite encontrar o caminho mais curto entre duas entidades na rede de relacionamentos. O resultado é exibido em um formato textual e visual.
 * **Perguntas Frequentes (FAQ)**: Respostas para as dúvidas mais comuns sobre o projeto, seus dados e a metodologia utilizada.
-* **Contato**: Informações de contato do time de desenvolvimento, incluindo e-mails e endereço institucional no ICMC-USP.
+* **Contato**: Informações de contato do time de desenvolvimento.
 
 ---
 
@@ -31,7 +31,7 @@ A aplicação é dividida em várias páginas, cada uma com um propósito espec�
 A arquitetura da aplicação segue o padrão Flask, com a organização dos arquivos e pastas conforme a convenção.
 
 ```
-MECAI/
+
 │-- project/
 │-- static/images/          # Imagens utilizadas na aplicação
 │   ├── arquitetura.png
@@ -85,7 +85,6 @@ Para configurar e executar o projeto localmente, siga os passos abaixo:
 1.  **Clone o repositório:**
     ```bash
     git clone [https://github.com/s64864316/PEP_Scan.git]
-    cd MECAI
     ```
 
 2.  **Crie e ative o ambiente virtual:**
@@ -106,7 +105,7 @@ Para configurar e executar o projeto localmente, siga os passos abaixo:
     ```bash
     python app.py
     ```
-    A aplicação estará disponível em `http://127.0.0.1:5000`.
+    A aplicação estará disponível em [https://pep-scan-tqnn.onrender.com/].
 
 ---
 
