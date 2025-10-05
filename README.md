@@ -76,7 +76,7 @@ A stack tecnológica do projeto é robusta e moderna, focada em desenvolvimento 
 
 ---
 ## Endereço da Ferramenta
-Link PEP Scan: http://44.203.124.107:5000/ (apenas para a PoC)
+Link PEP Scan: [https://pep-scan-tqnn.onrender.com/] (apenas para a PoC)
 
 ## Como Rodar o Projeto em sua Máquina Local
 
