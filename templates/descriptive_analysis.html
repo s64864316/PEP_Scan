@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PEP Scan - Auxílios do Governo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #002147;
+            --secondary-blue: #004080;
+            --accent-green: #4CAF50;
+            --light-gray: #f5f7fa;
+            --medium-gray: #e0e7ff;
+            --dark-gray: #4a5568;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-gray);
+            color: #333;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: #fff;
+            padding: 40px 0;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Explicitly ensure these elements within the header are styled */
+        header h1,
+        header p {
+            color: #fff;
+        }
+
+        header h1 i {
+            color: var(--accent-green); /* Set the icon color to accent green */
+        }
+
+        nav {
+            background-color: var(--secondary-blue);
+            padding: 15px 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        nav a {
+            color: #fff;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        
+        nav a.active, nav a:hover {
+            background-color: var(--primary-blue);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .container {
+            max-width: 1300px;
+            margin: 30px auto;
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 5px 25px rgba(0, 33, 71, 0.1);
+            flex: 1;
+        }
+        
+        .page-context {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+        
+        .context-description {
+            color: var(--secondary-blue);
+            font-size: 1.2em;
+            margin-top: 10px;
+            font-weight: 500;
+        }
+        
+        h1, h2 {
+            color: var(--primary-blue);
+            text-align: center;
+        }
+        
+        h2 {
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        h3 {
+            color: var(--primary-blue);
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+            text-align: center;
+        }
+
+        p {
+            line-height: 1.8;
+            color: var(--dark-gray);
+            text-align: center; /* This is the global center alignment for general paragraphs */
+            margin-bottom: 20px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Highlight Box - Reused for key definitions */
+        .highlight-box {
+            background: linear-gradient(to right, #e6f7ff, #f0faff);
+            padding: 30px;
+            border-radius: 12px;
+            border-left: 5px solid var(--primary-blue);
+            margin: 40px auto; /* Centering the box */
+            text-align: center;
+            max-width: 900px; /* Limit width for readability */
+        }
+        
+        .highlight-box h2 {
+            margin-top: 0;
+            font-size: 1.8em;
+        }
+        .highlight-box h3 { /* Style for h3 within highlight box */
+            margin-top: 0;
+            font-size: 1.5em;
+            color: var(--primary-blue);
+        }
+        .highlight-box p {
+            margin-bottom: 0; /* No extra margin for last paragraph in highlight box */
+            color: #2d3748;
+        }
+
+
+        /* Charts Container */
+        .charts-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        /* Specific .chart-center for 2-column layout */
+        .chart-center {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+            gap: 30px; /* Gap between charts */
+            margin-top: 20px;
+            width: 100%; /* Occupy full width of container */
+        }
+
+        .chart {
+            width: 48%; /* Each chart will occupy approximately half the width */
+            min-width: 300px; /* Minimum width to prevent squishing */
+            text-align: center;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 33, 71, 0.08);
+            padding: 20px;
+            transition: transform 0.3s ease;
+        }
+        .chart:hover {
+            transform: translateY(-5px);
+        }
+        .chart h3 {
+            color: var(--primary-blue);
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        .chart img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Table styles */
+        .search-results table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+            box-shadow: 0 5px 20px rgba(0, 33, 71, 0.05);
+            border-radius: 12px;
+            overflow: hidden; /* Ensures border-radius applies to inner elements */
+        }
+        .search-results th,
+        .search-results td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e7ff; /* Lighter border */
+            color: var(--dark-gray);
+        }
+        .search-results th {
+            background-color: var(--primary-blue);
+            color: #fff;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9em;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+        .search-results tbody tr:nth-child(even) {
+            background-color: #f8faff; /* Lighter alternating row */
+        }
+        .search-results tbody tr:hover {
+            background-color: #e6f7ff; /* Hover effect */
+        }
+
+        /* Pagination styles */
+        .pagination {
+            text-align: center; /* Center align pagination */
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+        .pagination a,
+        .pagination span { /* Span for disabled button */
+            display: inline-block;
+            text-decoration: none;
+            padding: 10px 20px;
+            border: 1px solid var(--secondary-blue);
+            color: var(--secondary-blue);
+            background-color: #fff;
+            border-radius: 30px;
+            margin: 0 8px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+        .pagination a:hover {
+            background-color: var(--secondary-blue);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+        .pagination span { /* Style for disabled "Next" button */
+            color: #ccc !important;
+            border-color: #ccc !important;
+            background-color: #f9f9f9 !important;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        /* Form styling (if any) */
+        form {
+            text-align: center;
+            margin-top: 40px;
+            padding: 30px;
+            background-color: #f0f7ff;
+            border-radius: 16px;
+            box-shadow: 0 5px 20px rgba(0, 33, 71, 0.08);
+            border: 1px solid #e0e7ff;
+        }
+        form label {
+            font-weight: 600;
+            color: var(--primary-blue);
+            font-size: 1.1em;
+            margin-right: 10px;
+        }
+        form select {
+            margin: 10px;
+            padding: 10px 15px;
+            font-size: 16px;
+            border: 1px solid var(--secondary-blue);
+            border-radius: 8px;
+            background-color: #fcfdff;
+            color: #333;
+            appearance: none;
+            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23002147%22%20d%3D%22M287%2C197.915L146.205%2C57.12%2C5.41%2C197.915c-3.615%2C3.615-9.463%2C3.615-13.078%2C0c-3.615-3.615-3.615-9.463%2C0-13.078L140.4%2C3.615c3.615-3.615%2C9.463-3.615%2C13.078%2C0l136.21%2C136.21C290.615%2C188.452%2C290.615%2C194.299%2C287%2C197.915z%22%2F%3E%3C%2Fsvg%3E');
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 12px;
+        }
+        form button {
+            background-color: var(--accent-green);
+            color: #fff;
+            border: none;
+            padding: 12px 25px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 8px;
+            margin-top: 15px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        form button:hover {
+            background-color: #3d8b40;
+            transform: translateY(-2px);
+        }
+
+        /* Download container styles */
+        .download-container {
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Center the download section */
+            flex-wrap: wrap;
+            margin-top: 40px;
+            padding: 20px;
+            background-color: #f8faff;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 33, 71, 0.05);
+            border: 1px solid #e0e7ff;
+        }
+        .download-container p {
+            margin-right: 20px;
+            margin-bottom: 0; /* Reset margin-bottom for p in flex container */
+            font-size: 1.1em;
+            color: var(--dark-gray);
+            text-align: center; /* Ensure text within container is centered */
+        }
+        .download-container .btn-primary {
+            padding: 12px 25px; /* Adjust padding for the button */
+            font-size: 1em;
+            border-radius: 50px; /* More rounded button */
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            box-shadow: 0 4px 15px rgba(0, 33, 71, 0.2);
+            transition: all 0.3s ease;
+            text-decoration: none; /* Ensure it's a link */
+            display: inline-flex;
+            align-items: center;
+            gap: 8px; /* Gap for icon */
+        }
+        .download-container .btn-primary:hover {
+            background: linear-gradient(135deg, var(--secondary-blue), var(--accent-green));
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 33, 71, 0.3);
+        }
+        
+        /* General button styles for consistency, using CSS variables */
+        .btn-primary {
+            background-color: var(--secondary-blue);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-blue);
+        }
+        
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+        
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+        
+        .btn-icon {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        /* Footer Styles */
+        footer {
+            background: linear-gradient(135deg, var(--primary-blue), #001a36);
+            color: white;
+            padding: 60px 0 30px;
+            margin-top: 60px;
+        }
+        
+        .footer-content {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+        
+        .footer-column h3 {
+            color: #fff;
+            margin-bottom: 25px;
+            font-size: 1.4em;
+            position: relative;
+            padding-bottom: 15px;
+            text-align: left; /* Explicitly align h3 text left */
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--accent-green);
+            border-radius: 2px;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 15px;
+        }
+        
+        .footer-links a {
+            color: #c5d5ff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        .footer-links a i {
+            margin-right: 12px;
+            font-size: 14px;
+            color: var(--accent-green);
+        }
+        
+        .footer-contact p {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+            color: #c5d5ff;
+            text-align: left; /* Explicitly align contact paragraphs left */
+            margin-left: 0;
+            margin-right: 0;
+        }
+        
+        .footer-contact i {
+            margin-right: 15px;
+            color: var(--accent-green);
+            min-width: 20px;
+            margin-top: 5px;
+        }
+        
+        .footer-social {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icon:hover {
+            background: var(--accent-green);
+            transform: translateY(-5px);
+        }
+        
+        .footer-newsletter p {
+            color: #c5d5ff;
+            margin-bottom: 20px;
+        }
+        
+        .newsletter-form {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .newsletter-form input {
+            flex: 1;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        .newsletter-form input::placeholder {
+            color: #a0aec0;
+        }
+        
+        .newsletter-form button {
+            background: var(--accent-green);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 0 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .newsletter-form button:hover {
+            background: #3d8b40;
+        }
+        
+        .footer-bottom {
+            max-width: 1300px;
+            margin: 40px auto 0;
+            padding: 25px 40px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            color: #a0aec0;
+            font-size: 0.9em;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .footer-logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer-logo i {
+            color: var(--accent-green);
+            margin-right: 10px;
+        }
+        
+        @media (max-width: 992px) {
+            .charts-container,
+            .chart-center {
+                flex-direction: column;
+                align-items: center;
+            }
+            .chart {
+                width: 90%;
+            }
+            .footer-content {
+                gap: 30px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            nav a {
+                display: block;
+                margin: 10px auto;
+                width: 90%;
+                max-width: 300px;
+            }
+            .footer-column {
+                text-align: center;
+            }
+            .footer-column h3::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            .footer-links a {
+                justify-content: center;
+            }
+            .footer-contact p {
+                justify-content: center;
+            }
+            .footer-social {
+                justify-content: center;
+            }
+            .footer-bottom {
+                flex-direction: column;
+                gap: 20px;
+            }
+            .download-container p {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+            .download-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        {% if request.endpoint == 'home' %}
+            <h1><i class="fas fa-shield-alt"></i> PEP Scan</h1>
+            <p>Ferramenta para identificar possíveis benefícios indevidos recebidos por autoridades públicas</p>
+        {% elif request.endpoint == 'peps_distribution' %}
+            <h1><i class="fas fa-chart-pie"></i> Distribuição de PEPs</h1>
+            <p>Visualização da distribuição geográfica e por categoria de Pessoas Expostas Politicamente</p>
+        {% elif request.endpoint == 'descriptive_analysis' %}
+            <h1><i class="fas fa-hand-holding-usd"></i> Auxílios do Governo</h1>
+            <p>Análise de beneficiários de auxílios governamentais</p>
+        {% elif request.endpoint == 'shortest_path' %}
+            <h1><i class="fas fa-route"></i> Caminho Mais Curto</h1>
+            <p>Encontre o caminho mais curto entre duas entidades na rede</p>
+        {% elif request.endpoint == 'user_input_analysis' %}
+            <h1><i class="fas fa-project-diagram"></i> Análise de Relacionamentos</h1>
+            <p>Explore conexões de pessoas e empresas através de relacionamentos interativos</p>
+        {% elif request.endpoint == 'contacts' %}
+            <h1><i class="fas fa-envelope-open-text"></i> Contato</h1>
+            <p>Entre em contato com a equipe PEP Scan</p>
+        {% else %}
+            <h1><i class="fas fa-shield-alt"></i> PEP Scan</h1>
+            <p>Ferramenta para identificar possíveis benefícios indevidos recebidos por autoridades públicas</p>
+        {% endif %}
+    </header>
+
+    <nav>
+        <a href="{{ url_for('home') }}" class="{% if request.endpoint == 'home' %}active{% endif %}">Home</a>
+        <a href="{{ url_for('peps_distribution') }}" class="{% if request.endpoint == 'peps_distribution' %}active{% endif %}">Distribuição de PEPs</a>
+        <a href="{{ url_for('descriptive_analysis') }}" class="{% if request.endpoint == 'descriptive_analysis' %}active{% endif %}">Auxílios do Governo</a>
+        <a href="{{ url_for('shortest_path') }}" class="{% if request.endpoint == 'shortest_path' %}active{% endif %}">Caminho Mais Curto</a>
+        <a href="{{ url_for('user_input_analysis') }}" class="{% if request.endpoint == 'user_input_analysis' %}active{% endif %}">Relacionamentos</a>
+        <a href="{{ url_for('faq') }}" class="{% if request.endpoint == 'faq' %}active{% endif %}">FAQ</a>
+        <a href="{{ url_for('contacts') }}" class="{% if request.endpoint == 'contacts' %}active{% endif %}">Contato</a>
+    </nav>
+    
+    <div class="container">
+        <div class="page-context">
+            <h1>Auxílios do Governo</h1>
+            <p class="context-description">
+                Análise de beneficiários de auxílios governamentais
+            </p>
+        </div>
+
+        <div class="highlight-box">
+            <h2>O que são auxílios do governo brasileiro?</h2>
+            <p>Os auxílios do governo brasileiro são programas sociais criados com o objetivo de oferecer suporte financeiro a pessoas e famílias em situações de vulnerabilidade social e econômica. Esses benefícios têm o propósito de garantir uma rede de proteção, especialmente em momentos de crise, e de promover a redução da desigualdade no país.</p>
+            <p>No contexto do PEP Scan, estão sendo considerados dados de benificiários do Bolsa Família e Auxílio Emergencial.</p>
+        </div>
+
+        <div class="highlight-box">
+            <h3>Auxílio Emergencial</h3>
+            <p>O Auxílio Emergencial foi um programa criado pelo governo federal em 2020, como uma medida de enfrentamento aos impactos econômicos causados pela pandemia de COVID-19. O benefício teve como objetivo principal fornecer uma assistência financeira temporária para trabalhadores informais, microempreendedores individuais (MEIs), desempregados, e pessoas de baixa renda que estavam enfrentando dificuldades financeiras devido ao isolamento social e à crise sanitária.</p>
+            <p>O valor do Auxílio Emergencial variava conforme a situação do beneficiário e as políticas implementadas ao longo do programa. Inicialmente, os valores eram de R$ 600 para pessoas solteiras e R$ 1.200 para mães chefes de família, mas ao longo dos meses houve ajustes nos valores e na forma de pagamento. O programa foi encerrado em 2021, mas teve uma grande relevância para milhões de brasileiros que estavam em situação de vulnerabilidade e sem acesso a outras fontes de renda durante a pandemia.</p>
+        </div>
+
+        <div class="highlight-box">
+            <h3>Bolsa Família</h3>
+            <p>O Bolsa Família é um programa de transferência direta de renda criado em 2003, com o objetivo de combater a pobreza e a fome no Brasil. Diferentemente do Auxílio Emergencial, que foi uma medida emergencial para uma crise específica, o Bolsa Família é um programa contínuo e regular, destinado a famílias em situação de extrema pobreza e pobreza.</p>
+            <p>Para ter acesso ao benefício, as famílias precisam atender a critérios específicos, como ter uma renda per capita inferior a R$ 218 (para a extrema pobreza) ou entre R$ 218 e R$ 436 (para a pobreza), além de atender a condições de saúde e educação, como garantir a frequência escolar de crianças e adolescentes e a realização de exames e vacinas. O valor do benefício varia de acordo com a situação de cada família e pode ser complementado por outros benefícios, como o Benefício Variável, destinado a crianças e adolescentes de até 17 anos.</p>
+        </div>
+
+        <h2>Análise de PEPs que receberam Auxílio Emergencial</h2>
+        <p>Os PEPs (Pessoas Expostas Politicamente) que receberam o Auxílio Emergencial, um benefício oferecido pelo governo brasileiro durante a pandemia de COVID-19, são destacados a seguir. A visualização mostra a distribuição desses indivíduos:</p>
+        
+        <div class="chart-center">
+            <div class="chart">
+                <h3>Distribuição de PEPs que Receberam Auxílio Emergencial</h3>
+                <img src="{{ url_for('static', filename='images/distribution_pep_aux_emer.png') }}" alt="Distribuição de PEPs que Receberam Auxílio Emergencial">
+            </div>
+            <div class="chart">
+                <h3>Distribuição de PEPs que Receberam Auxílio Emergencial por Estado</h3>
+                <img src="{{ url_for('static', filename='images/pep_aux_emer_per_state.png') }}" alt="Distribuição de PEPs que Receberam Auxílio Emergencial por Estado">
+            </div>
+        </div>
+        
+        <p>A seguir você pode identificar tais PEPs:</p>
+
+        <div class="search-results">
+            <table id="pep-aux-table">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>CPF</th>
+                        <th>Sigla da Função</th>
+                        <th>UF</th>
+                        <th>DT do Início do Exercício</th>
+                        <th>DT do Fim do Exercício</th>
+                        <th>Qtd de Meses Recebidos</th>
+                        <th>Primeiro Mês Recebido</th>
+                        <th>Último Mês Recebido</th>
+                    </tr>
+                </thead>
+                <tbody id="pep-aux-emer-table-body">
+                    {% for pep in peps_aux %}
+                    <tr>
+                        <td>{{ pep[0] }}</td>
+                        <td>{{ pep[1] }}</td>
+                        <td>{{ pep[2] }}</td>
+                        <td>{{ pep[3] }}</td>
+                        <td>{{ pep[4] }}</td>
+                        <td>{{ pep[5] }}</td>
+                        <td>{{ pep[6] }}</td>
+                        <td>{{ pep[7] }}</td>
+                        <td>{{ pep[8] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        
+            <div id="pagination_aux" class="pagination">
+                {% if page > 1 %}
+                    <a href="#" class="pagination-aux-link" data-page="{{ page - 1 }}">&#60; Anterior</a>
+                {% endif %}
+
+                {% if has_next_aux %}
+                    <a href="#" class="pagination-aux-link button" data-page="{{ page + 1 }}">Próximo &#62;</a>
+                {% else %}
+                    <span class="pagination-aux-link button" style="pointer-events: none; color: #ccc;">Próximo &#62;</span>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="download-container">
+            <p>Você pode baixar a lista completa de PEPs que receberam Auxílio Emergencial em formato CSV:</p>
+            <a href="{{ url_for('download_peps_aux_emer') }}" class="btn-primary btn-icon">Download CSV</a>
+        </div>
+        
+        <h2>Análise de PEPs que receberam Bolsa Família</h2>
+        <p>Os PEPs (Pessoas Expostas Politicamente) que receberam Bolsa Família, um benefício oferecido pelo governo brasileiro para famílias menos favorecidas financeiramente. A visualização mostra a distribuição desses indivíduos:</p>
+
+        <div class="chart-center">
+            <div class="chart">
+                <h3>Distribuição de PEPs que Receberam Bolsa Família</h3>
+                <img src="{{ url_for('static', filename='images/distribution_pep_bolsa_fam.png') }}" alt="Distribuição de PEPs que Receberam Bolsa Família">
+            </div>
+            <div class="chart">
+                <h3>Distribuição de PEPs que Receberam Bolsa Família por Estado</h3>
+                <img src="{{ url_for('static', filename='images/pep_bolsa_fam_per_state.png') }}" alt="Distribuição de PEPs que Receberam Bolsa Família por Estado">
+            </div>
+        </div>
+
+        <p>A seguir você pode identificar tais PEPs:</p>
+
+        <div class="search-results">
+            <table id="pep-bf-table">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>CPF</th>
+                        <th>Sigla da Função</th>
+                        <th>UF</th>
+                        <th>DT do Início do Exercício</th>
+                        <th>DT do Fim do Exercício</th>
+                        <th>Qtd de Meses Recebidos</th>
+                        <th>Primeiro Mês Recebido</th>
+                        <th>Último Mês Recebido</th>
+                    </tr>
+                </thead>
+                <tbody id="pep-bf-table-body">
+                    {% for pep in peps_bf %}
+                    <tr>
+                        <td>{{ pep[0] }}</td>
+                        <td>{{ pep[1] }}</td>
+                        <td>{{ pep[2] }}</td>
+                        <td>{{ pep[3] }}</td>
+                        <td>{{ pep[4] }}</td>
+                        <td>{{ pep[5] }}</td>
+                        <td>{{ pep[6] }}</td>
+                        <td>{{ pep[7] }}</td>
+                        <td>{{ pep[8] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        
+            <div id="pagination_bolsa" class="pagination">
+                {% if page > 1 %}
+                    <a href="#" class="pagination-bolsa-link" data-page="{{ page - 1 }}">&#60; Anterior</a>
+                {% endif %}
+
+                {% if has_next_bf %}
+                    <a href="#" class="pagination-bolsa-link button" data-page="{{ page + 1 }}">Próximo &#62;</a>
+                {% else %}
+                    <span class="pagination-bolsa-link button" style="pointer-events: none; color: #ccc;">Próximo &#62;</span>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="download-container">
+            <p>Você pode baixar a lista completa de PEPs que receberam Bolsa Família em formato CSV:</p>
+            <a href="{{ url_for('download_peps_bf') }}" class="btn-primary btn-icon">Download CSV</a>
+        </div>
+
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <div class="footer-logo">
+                    <i class="fas fa-shield-alt"></i> PEP Scan
+                </div>
+                <p style="color: #c5d5ff; margin-top: 20px; line-height: 1.8;">
+                    Ferramenta desenvolvida para identificar possíveis benefícios indevidos recebidos por autoridades públicas e suas redes de relacionamento.
+                </p>
+                <div class="footer-social">
+                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Links Rápidos</h3>
+                <ul class="footer-links">
+                    <li><a href="{{ url_for('home') }}"><i class="fas fa-chevron-right"></i> Home</a></li>
+                    <li><a href="{{ url_for('peps_distribution') }}"><i class="fas fa-chevron-right"></i> Distribuição de PEPs</a></li>
+                    <li><a href="{{ url_for('descriptive_analysis') }}"><i class="fas fa-chevron-right"></i> Auxílios do Governo</a></li>
+                    <li><a href="{{ url_for('shortest_path') }}"><i class="fas fa-chevron-right"></i> Caminho Mais Curto</a></li>
+                    <li><a href="{{ url_for('user_input_analysis') }}"><i class="fas fa-chevron-right"></i> Relacionamentos</a></li>
+                    <li><a href="{{ url_for('faq') }}"><i class="fas fa-chevron-right"></i> FAQ</a></li>
+                    <li><a href="{{ url_for('contacts') }}"><i class="fas fa-chevron-right"></i> Contato</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Contato</h3>
+                <div class="footer-contact">
+                    <p><i class="fas fa-map-marker-alt"></i> Instituto de Ciências Matemáticas e de Computação, USP São Carlos</p>
+                    <p><i class="fas fa-envelope"></i> contato@pepscan.com.br</p>
+                    <p><i class="fas fa-phone"></i> +55 (16) 3373-9621</p>
+                    <p><i class="fas fa-clock"></i> Seg-Sex: 08:00 - 18:00</p>
+                </div>
+            </div>
+            
+        </div>
+        
+        <div class="footer-bottom">
+            <div>
+                &copy; 2025 PEP Scan. Todos os direitos reservados.
+            </div>
+            <div>
+                Desenvolvido com <i class="fas fa-heart" style="color: #e74c3c;"></i> no ICMC-USP
+            </div>
+        </div>
+    </footer>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).on('click', '.pagination-aux-link', function(event) {
+            event.preventDefault();
+            var page = $(this).data('page');
+            $.ajax({
+                url: '/paginate-data-aux',
+                method: 'GET',
+                data: { page: page },
+                success: function(response) {
+                    $('#pep-aux-emer-table-body').html(response.table);
+                    $('#pagination_aux').html(response.pagination);
+                },
+                error: function(error) {
+                    console.error("Erro ao buscar dados do Auxílio Emergencial: ", error);
+                }
+            });
+        });
+
+        $(document).on('click', '.pagination-bolsa-link', function(event) {
+            event.preventDefault();
+            var page = $(this).data('page');
+            $.ajax({
+                url: '/paginate-data-bf',
+                method: 'GET',
+                data: { page: page },
+                success: function(response) {
+                    $('#pep-bf-table-body').html(response.table);
+                    $('#pagination_bolsa').html(response.pagination);
+                },
+                error: function(error) {
+                    console.error("Erro ao buscar dados do Bolsa Família: ", error);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

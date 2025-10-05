@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contato PEP Scan</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Root variables for consistent colors */
+        :root {
+            --primary-blue: #002147;
+            --secondary-blue: #004080;
+            --accent-green: #4CAF50;
+            --light-gray: #f5f7fa;
+            --medium-gray: #e0e7ff;
+            --dark-gray: #4a5568;
+        }
+
+        /* Universal box-sizing */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body styling from index.html */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-gray);
+            color: #333;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header styling from index.html */
+        header {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: #fff;
+            padding: 40px 0;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1,
+        header p {
+            color: #fff;
+        }
+
+        header h1 i {
+            color: var(--accent-green);
+        }
+
+        /* Nav styling from index.html */
+        nav {
+            background-color: var(--secondary-blue);
+            padding: 15px 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        nav a {
+            color: #fff;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        
+        nav a.active, nav a:hover {
+            background-color: var(--primary-blue);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Container styling from index.html */
+        .container {
+            max-width: 1300px;
+            margin: 30px auto;
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 5px 25px rgba(0, 33, 71, 0.1);
+            flex: 1; /* Allows container to grow and push footer down */
+        }
+
+        /* Page Context styling from index.html */
+        .page-context {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+        
+        .page-context h1 {
+            color: var(--primary-blue);
+            text-align: center; /* Ensure h1 in context is centered */
+        }
+
+        .context-description {
+            color: var(--secondary-blue);
+            font-size: 1.2em;
+            margin-top: 10px;
+            font-weight: 500;
+        }
+        
+        h2 {
+            color: var(--primary-blue);
+            text-align: center; /* Default h2 to center as seen in index.html */
+            margin-bottom: 20px; /* Add margin for spacing below h2 */
+            font-size: 1.8em;
+        }
+
+        /* General paragraph style */
+        p {
+            line-height: 1.8;
+            color: var(--dark-gray);
+            margin-bottom: 20px; /* Default margin for paragraphs */
+        }
+
+        /* Contact Section Specifics */
+        .contact-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive columns */
+            gap: 30px;
+            margin-top: 40px;
+            margin-bottom: 40px;
+        }
+
+        .contact-card {
+            background: #f9f9f9; /* Light background for card */
+            padding: 30px; /* Increased padding */
+            border-radius: 12px; /* More rounded corners */
+            border: 1px solid var(--medium-gray); /* Subtle border */
+            box-shadow: 0 5px 20px rgba(0, 33, 71, 0.08); /* Soft shadow */
+            text-align: center; /* Center content within card */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 33, 71, 0.12);
+        }
+
+        .contact-icon {
+            font-size: 48px; /* Larger icon */
+            color: var(--accent-green); /* Accent color for icons */
+            margin-bottom: 20px;
+            display: block; /* Ensure it takes full width for centering */
+        }
+
+        .contact-card h2 {
+            font-size: 1.5em; /* Slightly larger heading in card */
+            color: var(--primary-blue);
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .contact-card p {
+            font-size: 1em;
+            color: var(--dark-gray);
+            margin-bottom: 10px; /* Space between paragraphs in card */
+            text-align: center; /* Ensure paragraphs in card are centered */
+        }
+
+        .contact-card a {
+            color: var(--secondary-blue); /* Consistent link color */
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .contact-card a:hover {
+            color: var(--primary-blue);
+            text-decoration: underline;
+        }
+
+        .usp-map {
+            width: 100%;
+            height: 400px; /* Slightly taller map */
+            border: 1px solid var(--medium-gray); /* Subtle border */
+            border-radius: 12px;
+            margin-top: 40px; /* More space above map */
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        /* Social Links */
+        .social-links {
+            text-align: center;
+            margin-top: 40px; /* More space above social links */
+            padding-top: 20px;
+            border-top: 1px solid var(--medium-gray); /* Separator line */
+        }
+
+        .social-links a {
+            color: var(--secondary-blue);
+            margin: 0 15px;
+            font-size: 32px; /* Larger social icons */
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: var(--accent-green);
+            transform: translateY(-5px);
+        }
+
+        /* Footer Styles - Copied from index.html */
+        footer {
+            background: linear-gradient(135deg, var(--primary-blue), #001a36);
+            color: white;
+            padding: 60px 0 30px;
+            margin-top: 60px;
+        }
+        
+        .footer-content {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+        
+        .footer-column h3 {
+            color: #fff;
+            margin-bottom: 25px;
+            font-size: 1.4em;
+            position: relative;
+            padding-bottom: 15px;
+            text-align: left;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--accent-green);
+            border-radius: 2px;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 15px;
+        }
+        
+        .footer-links a {
+            color: #c5d5ff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        .footer-links a i {
+            margin-right: 12px;
+            font-size: 14px;
+            color: var(--accent-green);
+        }
+        
+        .footer-contact p {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+            color: #c5d5ff;
+            text-align: left; /* Ensure paragraphs align left */
+            margin-left: 0;
+            margin-right: 0;
+        }
+        
+        .footer-contact i {
+            margin-right: 15px;
+            color: var(--accent-green);
+            min-width: 20px;
+            margin-top: 5px;
+        }
+        
+        .footer-social {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icon:hover {
+            background: var(--accent-green);
+            transform: translateY(-5px);
+        }
+        
+        .footer-newsletter p {
+            color: #c5d5ff;
+            margin-bottom: 20px;
+        }
+        
+        .newsletter-form {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .newsletter-form input {
+            flex: 1;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        .newsletter-form input::placeholder {
+            color: #a0aec0;
+        }
+        
+        .newsletter-form button {
+            background: var(--accent-green);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 0 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .newsletter-form button:hover {
+            background: #3d8b40;
+        }
+        
+        .footer-bottom {
+            max-width: 1300px;
+            margin: 40px auto 0;
+            padding: 25px 40px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            color: #a0aec0;
+            font-size: 0.9em;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .footer-logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer-logo i {
+            color: var(--accent-green);
+            margin-right: 10px;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .contact-section {
+                grid-template-columns: 1fr; /* Stack columns on smaller screens */
+            }
+            .footer-content {
+                gap: 30px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            nav a {
+                display: block;
+                margin: 10px auto;
+                width: 90%;
+                max-width: 300px;
+            }
+            .footer-column {
+                text-align: center;
+            }
+            .footer-column h3::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            .footer-links a {
+                justify-content: center;
+            }
+            .footer-contact p {
+                justify-content: center;
+            }
+            .footer-social {
+                justify-content: center;
+            }
+            .footer-bottom {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1><i class="fas fa-university"></i> Contato</h1>
+        <p>Entre em contato com a equipe PEP Scan</p>
+    </header>
+
+    <nav>
+        <a href="{{ url_for('home') }}" class="{% if request.endpoint == 'home' %}active{% endif %}">Home</a>
+        <a href="{{ url_for('peps_distribution') }}" class="{% if request.endpoint == 'peps_distribution' %}active{% endif %}">Distribuição de PEPs</a>
+        <a href="{{ url_for('descriptive_analysis') }}" class="{% if request.endpoint == 'descriptive_analysis' %}active{% endif %}">Auxílios do Governo</a>
+        <a href="{{ url_for('shortest_path') }}" class="{% if request.endpoint == 'shortest_path' %}active{% endif %}">Caminho Mais Curto</a>
+        <a href="{{ url_for('user_input_analysis') }}" class="{% if request.endpoint == 'user_input_analysis' %}active{% endif %}">Relacionamentos</a>
+        <a href="{{ url_for('faq') }}" class="{% if request.endpoint == 'faq' %}active{% endif %}">FAQ</a>
+        <a href="{{ url_for('contacts') }}" class="{% if request.endpoint == 'contacts' %}active{% endif %}">Contato</a>
+    </nav>
+
+    <div class="container">
+        <div class="page-context">
+            <h1>Contate-nos</h1>
+            <p class="context-description">
+                Estamos à disposição para dúvidas, sugestões e parcerias.
+            </p>
+        </div>
+
+        <div class="contact-section">
+            <div class="contact-card">
+                <i class="contact-icon fas fa-map-marker-alt"></i>
+                <h2>Endereço Institucional</h2>
+                <p>
+                    Instituto de Ciências Matemáticas e de Computação (ICMC)<br>
+                    Universidade de São Paulo (USP)<br>
+                    Av. Trabalhador São-carlense, 400<br>
+                    Parque Arnold Schmidt<br>
+                    São Carlos - SP<br>
+                    CEP: 13566-590
+                </p>
+            </div>
+
+            <div class="contact-card">
+                <i class="contact-icon fas fa-clock"></i>
+                <h2>Horário de Atendimento</h2>
+                <p>
+                    Segunda a Sexta-feira<br>
+                    08h00 - 12h00 | 14h00 - 18h00
+                </p>
+            </div>
+
+            <div class="contact-card">
+                <i class="contact-icon fas fa-envelope"></i>
+                <h2>Contato Institucional</h2>
+                <p>
+                    <strong>E-mail do Projeto:</strong><br>
+                    <a href="mailto:pepscan@icmc.usp.br">pepscan@icmc.usp.br</a>
+                </p>
+                <p>
+                    <strong>Telefone:</strong><br>
+                    +55 (16) 3373-9621
+                </p>
+            </div>
+
+            <div class="contact-card">
+                <i class="contact-icon fas fa-users"></i>
+                <h2>Equipe Responsável</h2>
+                <p>
+                    <strong>Coordenador do Projeto:</strong><br>
+                    Prof. Dr. Cláudio Fabiano Motta Toledo<br>
+                    <a href="mailto:claudio@icmc.usp.br">claudio@icmc.usp.br</a>
+                </p>
+                <p>
+                    <strong>Aluno Desenvolvedor do Projeto:</strong><br>
+                    Ms. Michel Guijarro<br>
+                    <a href="mailto:michelguijarro@usp.br">michelguijarro@usp.br</a>
+                </p>
+            </div>
+        </div>
+
+        <iframe class="usp-map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3693.303289069324!2d-47.89311688537553!3d-21.996459385558087!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94b87002018260b9%3A0xc3f5d5e5e6e3c0b!2sInstituto%20de%20Ci%C3%AAncias%20Matem%C3%A1ticas%20e%20de%20Computa%C3%A7%C3%A3o%20(ICMC)!5e0!3m2!1spt-BR!2sbr!4v1678234567890!5m2!1spt-BR!2sbr" 
+                allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+
+        <div class="social-links">
+            <a href="https://www.facebook.com/icmcusp" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a>
+            <a href="https://x.com/icmcusp" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.linkedin.com/school/icmcusp/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+            <a href="https://www.youtube.com/@ICMCUSP" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <div class="footer-logo">
+                    <i class="fas fa-shield-alt"></i> PEP Scan
+                </div>
+                <p style="color: #c5d5ff; margin-top: 20px; line-height: 1.8; text-align: left;">
+                    Ferramenta desenvolvida para identificar possíveis benefícios indevidos recebidos por autoridades públicas e suas redes de relacionamento.
+                </p>
+                <div class="footer-social">
+                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Links Rápidos</h3>
+                <ul class="footer-links">
+                    <li><a href="{{ url_for('home') }}"><i class="fas fa-chevron-right"></i> Home</a></li>
+                    <li><a href="{{ url_for('peps_distribution') }}"><i class="fas fa-chevron-right"></i> Distribuição de PEPs</a></li>
+                    <li><a href="{{ url_for('descriptive_analysis') }}"><i class="fas fa-chevron-right"></i> Auxílios do Governo</a></li>
+                    <li><a href="{{ url_for('shortest_path') }}"><i class="fas fa-chevron-right"></i> Caminho Mais Curto</a></li>
+                    <li><a href="{{ url_for('user_input_analysis') }}"><i class="fas fa-chevron-right"></i> Relacionamentos</a></li>
+                    <li><a href="{{ url_for('faq') }}"><i class="fas fa-chevron-right"></i> FAQ</a></li>
+                    <li><a href="{{ url_for('contacts') }}"><i class="fas fa-chevron-right"></i> Contato</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Contato</h3>
+                <div class="footer-contact">
+                    <p><i class="fas fa-map-marker-alt"></i> Instituto de Ciências Matemáticas e de Computação, USP São Carlos</p>
+                    <p><i class="fas fa-envelope"></i> contato@pepscan.com.br</p>
+                    <p><i class="fas fa-phone"></i> +55 (16) 3373-9621</p>
+                    <p><i class="fas fa-clock"></i> Seg-Sex: 08:00 - 18:00</p>
+                </div>
+            </div>
+            
+        </div>
+        
+        <div class="footer-bottom">
+            <div>
+                &copy; 2025 PEP Scan. Todos os direitos reservados.
+            </div>
+            <div>
+                Desenvolvido com <i class="fas fa-heart" style="color: #e74c3c;"></i> no ICMC-USP
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

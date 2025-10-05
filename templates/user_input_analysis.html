@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PEP Scan - Relacionamentos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #002147;
+            --secondary-blue: #004080;
+            --accent-green: #4CAF50;
+            --light-gray: #f5f7fa;
+            --medium-gray: #e0e7ff;
+            --dark-gray: #4a5568;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-gray);
+            color: #333;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: #fff;
+            padding: 40px 0;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        header h1,
+        header p {
+            color: #fff;
+        }
+
+        header h1 i {
+            color: var(--accent-green);
+        }
+
+        nav {
+            background-color: var(--secondary-blue);
+            padding: 15px 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        nav a {
+            color: #fff;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        
+        nav a.active, nav a:hover {
+            background-color: var(--primary-blue);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .container {
+            max-width: 1300px;
+            margin: 30px auto;
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 5px 25px rgba(0, 33, 71, 0.1);
+            flex: 1;
+        }
+        
+        .page-context {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+        
+        .context-description {
+            color: var(--secondary-blue);
+            font-size: 1.2em;
+            margin-top: 10px;
+            font-weight: 500;
+        }
+        
+        h1, h2 {
+            color: var(--primary-blue);
+            text-align: center;
+        }
+        
+        h2 {
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        p {
+            line-height: 1.8;
+            color: var(--dark-gray);
+            text-align: center;
+            margin-bottom: 20px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Form Styling */
+        form {
+            text-align: left;
+            margin: 40px auto;
+            max-width: 900px;
+            padding: 30px;
+            background-color: #f0f7ff;
+            border-radius: 16px;
+            box-shadow: 0 5px 20px rgba(0, 33, 71, 0.08);
+            border: 1px solid #e0e7ff;
+        }
+
+        /* Form Rows & Alignment */
+        .input-group {
+            display: flex;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .input-group.label-spacer {
+            margin-bottom: 30px;
+            justify-content: center;
+        }
+
+        .input-group label {
+            font-weight: 600;
+            color: var(--primary-blue);
+            width: 80px;
+            flex-shrink: 0;
+            text-align: left;
+            padding-right: 15px;
+        }
+
+        .input-and-checkboxes {
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+            gap: 20px;
+        }
+
+        form input,
+        form input::placeholder {
+            font-size: 16px;
+        }
+
+        form input[type=text], 
+        form input[type=number] {
+            flex-grow: 1;
+            min-width: 250px;
+            padding: 12px 15px;
+            border: 1px solid var(--secondary-blue);
+            border-radius: 8px;
+            background-color: #fcfdff;
+            color: #333;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        form input[type=text]:focus, 
+        form input[type=number]:focus {
+            border-color: var(--accent-green);
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+            outline: none;
+        }
+        
+        /* Document Fields Styling */
+        .document-fields {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .document-field {
+            flex: 1;
+            border: 1px solid #e0e7ff;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+        }
+
+        .document-field.active {
+            background-color: #ffffff;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 2px rgba(0, 33, 71, 0.1);
+        }
+
+        .document-field label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--primary-blue);
+        }
+
+        .radio-group {
+            margin-top: 10px;
+        }
+
+        .radio-group label {
+            display: inline-flex;
+            align-items: center;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+
+        .radio-group input[type="radio"] {
+            margin-right: 5px;
+        }
+
+        /* Validation Messages */
+        .validation-message {
+            color: #dc3545;
+            font-size: 0.85em;
+            margin-top: 5px;
+            display: none;
+        }
+
+        /* Checkboxes */
+        .checkboxes label {
+            font-weight: normal;
+            color: var(--dark-gray);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            text-align: left;
+            padding-right: 0;
+            min-width: unset;
+        }
+
+        .checkboxes input[type="checkbox"] {
+            margin: 0;
+            width: 18px;
+            height: 18px;
+            accent-color: var(--accent-green);
+            cursor: pointer;
+        }
+        
+        /* Button styling */
+        form .btn-primary {
+            padding: 12px 25px;
+            font-size: 1em;
+            border-radius: 50px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            box-shadow: 0 4px 15px rgba(0, 33, 71, 0.2);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        form .btn-primary:hover {
+            background: linear-gradient(135deg, var(--secondary-blue), var(--accent-green));
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 33, 71, 0.3);
+        }
+
+        .btn-primary {
+            background-color: var(--secondary-blue);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-blue);
+        }
+        
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+        
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+        
+        .btn-icon {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Graph Container */
+        .graph-container {
+            margin-top: 40px;
+            text-align: center;
+            width: 100%;
+            height: 600px;
+            background-color: #fcfdff;
+            border-radius: 12px;
+            box-shadow: 0 5px 25px rgba(0, 33, 71, 0.1);
+            overflow: hidden;
+            position: relative;
+        }
+
+        #graph-display-area {
+            width: 100%;
+            height: 100%;
+            border: 1px solid var(--medium-gray);
+            border-radius: 12px;
+        }
+
+        .error-message {
+            color: #dc3545;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px auto;
+            max-width: 900px;
+            font-weight: 600;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        /* Legend styling */
+        .legend {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--medium-gray);
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+            font-size: 0.9em;
+            z-index: 1000;
+            display: none;
+            color: var(--dark-gray);
+            line-height: 1.4;
+        }
+
+        .legend div {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .legend .color-box {
+            width: 25px;
+            height: 25px;
+            margin-right: 12px;
+            border-radius: 4px;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+        
+        /* Progress Steps */
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin: 40px auto 30px;
+            max-width: 800px;
+            counter-reset: step;
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .progress-steps::before {
+            content: '';
+            position: absolute;
+            top: 50px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #ccc;
+            z-index: 0;
+        }
+
+        .step {
+            text-align: center;
+            position: relative;
+            flex: 1;
+            padding: 0 10px;
+        }
+
+        .step span {
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            border-radius: 50%;
+            background: #ccc;
+            color: white;
+            display: inline-block;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .step.active span {
+            background: var(--secondary-blue);
+            box-shadow: 0 4px 10px rgba(0, 64, 128, 0.4);
+            transform: scale(1.1);
+        }
+
+        .step.completed span {
+            background: var(--accent-green);
+            box-shadow: 0 4px 10px rgba(76, 175, 80, 0.4);
+        }
+
+        .step p {
+            font-size: 1em;
+            color: #666;
+            margin-top: 5px;
+            line-height: 1.3;
+            text-align: center;
+            max-width: none;
+        }
+
+        .step.active p,
+        .step.completed p {
+            color: var(--primary-blue);
+            font-weight: bold;
+        }
+
+        input[data-autofilled] {
+            background-color: #f0f8ff !important;
+            border-left: 3px solid #004080;
+            padding-left: 8px;
+        }
+        
+        /* Footer Styles */
+        footer {
+            background: linear-gradient(135deg, var(--primary-blue), #001a36);
+            color: white;
+            padding: 60px 0 30px;
+            margin-top: 60px;
+        }
+        
+        .footer-content {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+        
+        .footer-column h3 {
+            color: #fff;
+            margin-bottom: 25px;
+            font-size: 1.4em;
+            position: relative;
+            padding-bottom: 15px;
+            text-align: left;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--accent-green);
+            border-radius: 2px;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 15px;
+        }
+        
+        .footer-links a {
+            color: #c5d5ff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        .footer-links a i {
+            margin-right: 12px;
+            font-size: 14px;
+            color: var(--accent-green);
+        }
+        
+        .footer-contact p {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+            color: #c5d5ff;
+            text-align: left;
+            margin-left: 0;
+            margin-right: 0;
+        }
+        
+        .footer-contact i {
+            margin-right: 15px;
+            color: var(--accent-green);
+            min-width: 20px;
+            margin-top: 5px;
+        }
+        
+        .footer-social {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icon:hover {
+            background: var(--accent-green);
+            transform: translateY(-5px);
+        }
+        
+        .footer-newsletter p {
+            color: #c5d5ff;
+            margin-bottom: 20px;
+        }
+        
+        .newsletter-form {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .newsletter-form input {
+            flex: 1;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        .newsletter-form input::placeholder {
+            color: #a0aec0;
+        }
+        
+        .newsletter-form button {
+            background: var(--accent-green);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 0 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .newsletter-form button:hover {
+            background: #3d8b40;
+        }
+        
+        .footer-bottom {
+            max-width: 1300px;
+            margin: 40px auto 0;
+            padding: 25px 40px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            color: #a0aec0;
+            font-size: 0.9em;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .footer-logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer-logo i {
+            color: var(--accent-green);
+            margin-right: 10px;
+        }
+        
+        @media (max-width: 992px) {
+            .input-group {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .input-group label {
+                width: 100%;
+                text-align: left;
+                padding-right: 0;
+                margin-bottom: 5px;
+            }
+            .input-and-checkboxes {
+                flex-direction: column;
+                align-items: flex-start;
+                width: 100%;
+                gap: 10px;
+            }
+            .checkboxes {
+                justify-content: flex-start;
+                width: 100%;
+                margin-left: 0;
+            }
+            .document-fields {
+                flex-direction: column;
+            }
+            .progress-steps {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+            }
+            .progress-steps::before {
+                display: none;
+            }
+            .step {
+                width: 100%;
+                padding: 0;
+            }
+            .footer-content {
+                gap: 30px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            nav a {
+                display: block;
+                margin: 10px auto;
+                width: 90%;
+                max-width: 300px;
+            }
+            .footer-column {
+                text-align: center;
+            }
+            .footer-column h3::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            .footer-links a {
+                justify-content: center;
+            }
+            .footer-contact p {
+                justify-content: center;
+            }
+            .footer-social {
+                justify-content: center;
+            }
+            .footer-bottom {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1><i class="fas fa-project-diagram"></i> Análise de Relacionamentos</h1>
+        <p>Explore conexões de pessoas e empresas através de relacionadas interativos</p>
+    </header>
+
+    <nav>
+        <a href="{{ url_for('home') }}" class="{% if request.endpoint == 'home' %}active{% endif %}">Home</a>
+        <a href="{{ url_for('peps_distribution') }}" class="{% if request.endpoint == 'peps_distribution' %}active{% endif %}">Distribuição de PEPs</a>
+        <a href="{{ url_for('descriptive_analysis') }}" class="{% if request.endpoint == 'descriptive_analysis' %}active{% endif %}">Auxílios do Governo</a>
+        <a href="{{ url_for('shortest_path') }}" class="{% if request.endpoint == 'shortest_path' %}active{% endif %}">Caminho Mais Curto</a>
+        <a href="{{ url_for('user_input_analysis') }}" class="{% if request.endpoint == 'user_input_analysis' %}active{% endif %}">Relacionamentos</a>
+        <a href="{{ url_for('faq') }}" class="{% if request.endpoint == 'faq' %}active{% endif %}">FAQ</a>
+        <a href="{{ url_for('contacts') }}" class="{% if request.endpoint == 'contacts' %}active{% endif %}">Contato</a>
+    </nav>
+
+    <div class="container">
+        <div class="progress-steps">
+            <div class="step" id="step1">
+                <span>1</span>
+                <p>Inserir dados</p>
+            </div>
+            <div class="step" id="step2">
+                <span>2</span>
+                <p>Processar análise & Visualizar resultados</p>
+            </div>
+        </div>
+
+        <div class="page-context"></div>
+
+        <h2>Explorando conexões de pessoas e empresas</h2>
+        <p>Esta ferramenta permite investigar conexões diretas e indiretas de uma pessoa ou empresa de sua escolha. Siga os passos abaixo para realizar sua análise:<br/>
+        </p>
+
+        <div class="highlight-box">
+            <ol>
+                <li><strong>Nome completo</strong> da pessoa ou razão social da empresa</li>
+                <li><strong>Tipo de documento</strong> (completo ou parcial)</li>
+                <li><strong>Documento</strong> (CPF para pessoas físicas ou CNPJ para pessoas jurídicas)</li>
+                <li>Clicar no botão <strong>Buscar Relações</strong></li>
+            </ol>
+        </div>
+
+        <h3>Orientações sobre os documentos</h3>
+        <div class="database-info">
+            <h4>Para CPF (Pessoas Físicas):</h4>
+            <ul>
+                <li><i class="fas fa-check-circle"></i> <strong>Completo (11 dígitos):</strong> Insira todos os 11 dígitos do CPF</li>
+                <li><i class="fas fa-check-circle"></i> <strong>Parcial (6 dígitos):</strong> Insira apenas do 4º ao 9º dígito do CPF (ex: do CPF 123.456.789-09, insira 456789)</li>
+            </ul><br>
+
+            <h4>Para CNPJ (Pessoas Jurídicas):</h4>
+            <ul>
+                <li><i class="fas fa-check-circle"></i> <strong>Completo (14 dígitos):</strong> Insira todos os 14 dígitos do CNPJ</li>
+                <li><i class="fas fa-check-circle"></i> <strong>Parcial (7 dígitos):</strong> Insira apenas do 5º ao 11º dígito do CNPJ (ex: do CNPJ 12.345.678/0001-90, insira 5678000)</li>
+            </ul>
+        </div>
+
+        <h3>Legenda dos Ícones</h3>
+        <div class="legend-container">
+            <div class="legend-row">
+                <div class="legend-item">
+                    <img src="{{ url_for('static', filename='images/PEP.png') }}" alt="Ícone PEP" class="legend-icon">
+                    <div class="legend-text">
+                        <strong>PEP</strong><br>
+                        Pessoa Politicamente Exposta<br>
+                        <small>Pessoas conectadas são PEPs</small>
+                    </div>
+                </div>
+                
+                <div class="legend-item">
+                    <img src="{{ url_for('static', filename='images/money_red.png') }}" alt="Ícone Auxílio" class="legend-icon">
+                    <div class="legend-text">
+                        <strong>AUX_EMER</strong><br>
+                        Auxílio Emergencial<br>
+                        <small>Pessoas conectadas receberam auxílio</small>
+                    </div>
+                </div>
+                
+                <div class="legend-item">
+                    <img src="{{ url_for('static', filename='images/money_red.png') }}" alt="Ícone Bolsa Família" class="legend-icon">
+                    <div class="legend-text">
+                        <strong>BOLSA_FAM</strong><br>
+                        Bolsa Família<br>
+                        <small>Pessoas conectadas receberam benefício</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <style>
+            .legend-container {
+                margin: 20px 0;
+            }
+            
+            .legend-row {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 20px;
+                justify-content: center;
+            }
+            
+            .legend-item {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                min-width: 120px;
+                padding: 15px;
+                background: #f8f9fa;
+                border-radius: 8px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            }
+            
+            .legend-icon {
+                width: 30px;
+                height: 30px;
+                margin-bottom: 10px;
+                object-fit: contain;
+            }
+            
+            .legend-text {
+                font-size: 0.9em;
+                line-height: 1.5;
+            }
+            
+            .legend-text strong {
+                color: var(--primary-blue);
+            }
+            
+            @media (max-width: 768px) {
+                .legend-row {
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 15px;
+                }
+                
+                .legend-item {
+                    width: 100%;
+                    max-width: 200px;
+                }
+            }
+        </style>
+
+        <h3>Onde encontrar os dados para análise</h3>
+        <ul class="resource-list">
+            <li><i class="fas fa-user-tie"></i> <strong>PEPs (Pessoas Politicamente Expostas):</strong> 
+                <a href="https://portaldatransparencia.gov.br/download-de-dados/pep" target="_blank">Portal da Transparência</a> ou 
+                <a href="{{ url_for('descriptive_analysis') }}">nossa página de Auxílios do Governo</a>
+            </li>
+            <li><i class="fas fa-building"></i> <strong>CNPJ de empresas:</strong> 
+                <a href="https://dados.gov.br/dados/conjuntos-dados/cadastro-nacional-da-pessoa-juridica---cnpj" target="_blank">Dados.gov.br</a>
+            </li>
+        </ul>
+    <br>
+    <h3>Como interpretar os resultados</h3>
+    <p>Após inserir os dados das duas entidades, o sistema mostrará:</p>
+    <ul>
+        <li>Os tipos de relacionamentos existentes. Isso é mostrado ao se passar o mouse entre a linha (aresta) de conexão entre duas pessoas/empresas.</li>
+        <li>Possíveis pontos de conexão relevantes. Um PEP diretamente ou indiretamente conectado a várias pessoas que receberam auxílio do governo pode ser considerado suspeito.</li>
+        <li>Na visualização gráfica, você pode clicar em qualquer nó (pessoa ou empresa) para expandir e ver mais conexões relacionadas.</li>
+        <li>Pessoas diretamente conectadas ao ícone "PEP" são consideradas PEP. Pessoas diretamente conectadas ao ícone "AUX_EMER" receberam Auxílio Emergencial e pessoas diretamente conectadas ao ícone "BOLSA_FAM" receberam Bolsa Família. </li>
+
+    </ul>
+      
+
+        <style>
+            .highlight-box {
+                background: linear-gradient(to right, #e6f7ff, #f0faff);
+                padding: 20px;
+                border-radius: 8px;
+                border-left: 4px solid var(--primary-blue);
+                margin: 20px 0;
+            }
+            
+            .resource-list {
+                list-style-type: none;
+                padding-left: 0;
+            }
+            
+            .resource-list li {
+                padding: 10px 0;
+                border-bottom: 1px solid #e0e7ff;
+            }
+            
+            .resource-list i {
+                color: var(--primary-blue);
+                margin-right: 10px;
+                width: 20px;
+            }
+            
+            .database-info {
+                background-color: #f8f9fa;
+                padding: 20px;
+                border-radius: 8px;
+                margin: 20px 0;
+            }
+        </style>
+
+        <h2>Insira os dados da pessoa ou empresa</h2>
+
+            {% if error_message %}
+            <div class="error-message">{{ error_message }}</div>
+        {% endif %}
+
+        <form method="POST" action="/user_input_analysis?submitted=true" id="relationship-form">
+            <div class="input-group">
+                <label for="start_node_name">Nome:</label>
+                <div class="input-and-checkboxes">
+                    <input type="text" id="start_node_name" name="start_node_name" placeholder="Insira o nome da pessoa/empresa" required
+                           pattern="[A-Za-zÀ-ú\s]+" title="Por favor, insira apenas letras">
+                    <div class="validation-message" id="name-validation">O nome deve conter apenas letras</div>
+                    <div class="radio-group">
+                        <label>
+                            <input type="radio" name="node_type" value="PF" required> Pessoa Física (PF)
+                        </label>
+                        <label>
+                            <input type="radio" name="node_type" value="PJ"> Pessoa Jurídica (PJ)
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-group label-spacer">
+                <label>Documento:</label>
+                <div class="document-fields">
+                    <div class="document-field">
+                        <label for="cpf">CPF:</label>
+                        <input type="text" id="cpf" name="cpf" placeholder="Insira apenas os digitos" disabled>
+                               
+                        <div class="validation-message" id="cpf-validation"></div>
+                        <div class="radio-group">
+                            <label>
+                                <input type="radio" name="cpf_type" value="complete" disabled> Completo
+                            </label>
+                            <label>
+                                <input type="radio" name="cpf_type" value="partial" disabled> Parcial
+                            </label>
+                        </div>
+                    </div>
+                    <div class="document-field">
+                        <label for="cnpj">CNPJ:</label>
+                        <input type="text" id="cnpj" name="cnpj" placeholder="Insira apenas os digitos" disabled>
+                               
+                        <div class="validation-message" id="cnpj-validation"></div>
+                        <div class="radio-group">
+                            <label>
+                                <input type="radio" name="cnpj_type" value="complete" disabled> Completo
+                            </label>
+                            <label>
+                                <input type="radio" name="cnpj_type" value="partial" disabled> Parcial
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-primary btn-icon" name="action" value="caminho_grafo">
+                <i class="fas fa-search"></i> Buscar Relações
+            </button>
+        </form>
+
+        <form id="clear-graph-form" style="text-align: center; margin-top: 20px;">
+            <button type="button" class="btn-primary btn-icon" name="action" value="clear_everything" onclick="clearGraph()">
+                <i class="fas fa-redo"></i> Reiniciar Busca
+            </button>
+        </form>
+
+        <div class="graph-container">
+            <div id="graph-display-area" style="width: 100%; height: 100%;">
+                {{ graph_html|safe }}
+            </div>
+            <div class="legend" id="graph-legend">
+                <div>
+                    <div class="color-box" style="background-color: #FFA500;"></div>
+                    <span>Última pessoa/empresa selecionada</span>
+                </div>
+                <div>
+                    <div class="color-box" style="background-color: #0000FF;"></div>
+                    <span>Pessoa/empresa ainda não clicadas</span>
+                </div>
+                <div>
+                    <div class="color-box" style="background-color: #006400;"></div>
+                    <span>Pessoa/empresa selecionada atualmente</span>
+                </div>
+                <div>
+                    <div class="color-box" style="background-color: #90EE90;"></div>
+                    <span>Relacionamento direto</span>
+                </div>
+                <div>
+                    <div class="color-box" style="background-color: #E3464C;"></div>
+                    <span>Benefício governamental</span>
+                </div>
+                <div>
+                    <div class="color-box" style="background-color: #DD6629;"></div>
+                    <span>Autoridade pública (PEP)</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <div class="footer-logo">
+                    <i class="fas fa-shield-alt"></i> PEP Scan
+                </div>
+                <p style="color: #c5d5ff; margin-top: 20px; line-height: 1.8;">
+                    Ferramenta desenvolvida para identificar possíveis benefícios indevidos recebidos por autoridades públicas e suas redes de relacionamento.
+                </p>
+                <div class="footer-social">
+                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Links Rápidos</h3>
+                <ul class="footer-links">
+                    <li><a href="{{ url_for('home') }}"><i class="fas fa-chevron-right"></i> Home</a></li>
+                    <li><a href="{{ url_for('peps_distribution') }}"><i class="fas fa-chevron-right"></i> Distribuição de PEPs</a></li>
+                    <li><a href="{{ url_for('descriptive_analysis') }}"><i class="fas fa-chevron-right"></i> Auxílios do Governo</a></li>
+                    <li><a href="{{ url_for('shortest_path') }}"><i class="fas fa-chevron-right"></i> Caminho Mais Curto</a></li>
+                    <li><a href="{{ url_for('user_input_analysis') }}"><i class="fas fa-chevron-right"></i> Relacionamentos</a></li>
+                    <li><a href="{{ url_for('faq') }}"><i class="fas fa-chevron-right"></i> FAQ</a></li>
+                    <li><a href="{{ url_for('contacts') }}"><i class="fas fa-chevron-right"></i> Contato</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Contato</h3>
+                <div class="footer-contact">
+                    <p><i class="fas fa-map-marker-alt"></i> Instituto de Ciências Matemáticas e de Computação, USP São Carlos</p>
+                    <p><i class="fas fa-envelope"></i> contato@pepscan.com.br</p>
+                    <p><i class="fas fa-phone"></i> +55 (16) 3373-9621</p>
+                    <p><i class="fas fa-clock"></i> Seg-Sex: 08:00 - 18:00</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div>
+                &copy; 2025 PEP Scan. Todos os direitos reservados.
+            </div>
+            <div>
+                Desenvolvido com <i class="fas fa-heart" style="color: #e74c3c;"></i> no ICMC-USP
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vis-network@9.0.4/standalone/umd/vis-network.min.js"></script>
+
+    <script type="text/javascript">
+        // Progress Steps Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const step1 = document.getElementById('step1');
+            const step2 = document.getElementById('step2');
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const isSubmitted = urlParams.has('submitted') && urlParams.get('submitted') === 'true';
+
+            if (isSubmitted) {
+                step1.classList.add('completed');
+                step2.classList.add('active'); 
+                setTimeout(function() {
+                    const graphDisplayArea = document.getElementById('graph-display-area');
+                    const legend = document.getElementById('graph-legend');
+                    if (graphDisplayArea && graphDisplayArea.innerHTML.trim() !== '') {
+                        step2.classList.remove('active');
+                        step2.classList.add('completed');
+                        legend.style.display = 'block';
+                    } else {
+                        legend.style.display = 'none';
+                    }
+                }, 100);
+            } else {
+                step1.classList.add('active');
+                document.getElementById("graph-legend").style.display = "none";
+            }
+        });
+        
+        // Form handling for CPF/CNPJ fields with validation
+        document.addEventListener('DOMContentLoaded', function() {
+            const pfRadio = document.querySelector('input[name="node_type"][value="PF"]');
+            const pjRadio = document.querySelector('input[name="node_type"][value="PJ"]');
+            const cpfField = document.querySelector('.document-field:first-child');
+            const cnpjField = document.querySelector('.document-field:last-child');
+            const nameInput = document.getElementById('start_node_name');
+            const nameValidation = document.getElementById('name-validation');
+            
+            // Name validation
+            nameInput.addEventListener('input', function() {
+                const regex = /^[A-Za-zÀ-ú\s]+$/;
+                if (!regex.test(this.value)) {
+                    nameValidation.style.display = 'block';
+                } else {
+                    nameValidation.style.display = 'none';
+                }
+                updateFormData();
+            });
+
+            // Enable/disable fields based on PF/PJ selection
+            document.querySelectorAll('input[name="node_type"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    if (this.value === 'PF') {
+                        cpfField.classList.add('active');
+                        cnpjField.classList.remove('active');
+                        
+                        document.getElementById('cpf').disabled = false;
+                        document.querySelectorAll('input[name="cpf_type"]').forEach(r => r.disabled = false);
+                        
+                        document.getElementById('cnpj').disabled = true;
+                        document.querySelectorAll('input[name="cnpj_type"]').forEach(r => {
+                            r.disabled = true;
+                            r.checked = false;
+                        });
+                        document.getElementById('cnpj').value = '';
+                        document.getElementById('cnpj-validation').style.display = 'none';
+                    } else if (this.value === 'PJ') {
+                        cnpjField.classList.add('active');
+                        cpfField.classList.remove('active');
+                        
+                        document.getElementById('cnpj').disabled = false;
+                        document.querySelectorAll('input[name="cnpj_type"]').forEach(r => r.disabled = false);
+                        
+                        document.getElementById('cpf').disabled = true;
+                        document.querySelectorAll('input[name="cpf_type"]').forEach(r => {
+                            r.disabled = true;
+                            r.checked = false;
+                        });
+                        document.getElementById('cpf').value = '';
+                        document.getElementById('cpf-validation').style.display = 'none';
+                    }
+                    
+                    updateFormData();
+                });
+            });
+
+
+            // CPF validation
+            const cpfInput = document.getElementById('cpf');
+            const cpfValidation = document.getElementById('cpf-validation');
+            
+            cpfInput.addEventListener('input', function() {
+                const value = this.value.replace(/\D/g, '');
+                const isComplete = document.querySelector('input[name="cpf_type"][value="complete"]:checked');
+                const isPartial = document.querySelector('input[name="cpf_type"][value="partial"]:checked');
+                
+                // Only allow numbers
+                this.value = value;
+                
+                if (isComplete && value.length > 11) {
+                    this.value = value.substring(0, 11);
+                } else if (isPartial && value.length > 6) {
+                    this.value = value.substring(0, 6);
+                }
+                
+                validateCPF();
+                updateFormData();
+            });
+
+            function validateCPF() {
+                const value = cpfInput.value.replace(/\D/g, '');
+                const isComplete = document.querySelector('input[name="cpf_type"][value="complete"]:checked');
+                const isPartial = document.querySelector('input[name="cpf_type"][value="partial"]:checked');
+                
+                if (!isComplete && !isPartial) {
+                    cpfValidation.textContent = 'Selecione se o CPF é completo ou parcial';
+                    cpfValidation.style.display = 'block';
+                    return false;
+                }
+                
+                if (isComplete && value.length !== 11) {
+                    cpfValidation.textContent = 'CPF completo deve ter exatamente 11 dígitos';
+                    cpfValidation.style.display = 'block';
+                    return false;
+                } else if (isPartial && value.length !== 6) {
+                    cpfValidation.textContent = 'CPF parcial deve ter exatamente 6 dígitos';
+                    cpfValidation.style.display = 'block';
+                    return false;
+                } else {
+                    cpfValidation.style.display = 'none';
+                    return true;
+                }
+            }
+
+            // CNPJ validation
+            const cnpjInput = document.getElementById('cnpj');
+            const cnpjValidation = document.getElementById('cnpj-validation');
+            
+            cnpjInput.addEventListener('input', function() {
+                const value = this.value.replace(/\D/g, '');
+                const isComplete = document.querySelector('input[name="cnpj_type"][value="complete"]:checked');
+                const isPartial = document.querySelector('input[name="cnpj_type"][value="partial"]:checked');
+                
+                // Only allow numbers
+                this.value = value;
+                
+                if (isComplete && value.length > 14) {
+                    this.value = value.substring(0, 14);
+                } else if (isPartial && value.length > 7) {
+                    this.value = value.substring(0, 7);
+                }
+                
+                validateCNPJ();
+                updateFormData();
+            });
+
+            function validateCNPJ() {
+                const value = cnpjInput.value.replace(/\D/g, '');
+                const isComplete = document.querySelector('input[name="cnpj_type"][value="complete"]:checked');
+                const isPartial = document.querySelector('input[name="cnpj_type"][value="partial"]:checked');
+                
+                if (!isComplete && !isPartial) {
+                    cnpjValidation.textContent = 'Selecione se o CNPJ é completo ou parcial';
+                    cnpjValidation.style.display = 'block';
+                    return false;
+                }
+                
+                if (isComplete && value.length !== 14) {
+                    cnpjValidation.textContent = 'CNPJ completo deve ter exatamente 14 dígitos';
+                    cnpjValidation.style.display = 'block';
+                    return false;
+                } else if (isPartial && value.length !== 7) {
+                    cnpjValidation.textContent = 'CNPJ parcial deve ter exatamente 7 dígitos';
+                    cnpjValidation.style.display = 'block';
+                    return false;
+                } else {
+                    cnpjValidation.style.display = 'none';
+                    return true;
+                }
+            }
+
+            // Radio button changes
+            document.querySelectorAll('input[name="cpf_type"], input[name="cnpj_type"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    if (this.name === 'cpf_type') {
+                        validateCPF();
+                    } else {
+                        validateCNPJ();
+                    }
+                    updateFormData();
+                });
+            });
+            
+            function updateFormData() {
+                const form = document.querySelector('form[action="/user_input_analysis?submitted=true"]');
+                form.querySelectorAll('input, select, textarea').forEach(element => {
+                    formData[element.name] = element.type === 'checkbox' || element.type === 'radio' ? 
+                        (element.checked ? element.value : undefined) : element.value;
+                });
+                localStorage.setItem('unsavedFormData_' + window.location.pathname, JSON.stringify(formData));
+            }
+        });
+
+        // Form validation
+        document.getElementById('relationship-form').addEventListener('submit', function(e) {
+            const nodeType = document.querySelector('input[name="node_type"]:checked');
+            let isValid = true;
+            let errorMessage = '';
+
+            // Validate name
+            const nameInput = document.getElementById('start_node_name');
+            const nameRegex = /^[A-Za-zÀ-ú\s]+$/;
+            if (!nameRegex.test(nameInput.value)) {
+                isValid = false;
+                errorMessage = 'Por favor, insira um nome válido (apenas letras).';
+            }
+            // Validate node type selection
+            else if (!nodeType) {
+                isValid = false;
+                errorMessage = 'Por favor, selecione se é Pessoa Física ou Jurídica.';
+            }
+            // Validate PF (CPF)
+            else if (nodeType.value === 'PF') {
+                const cpf = document.getElementById('cpf').value.replace(/\D/g, '');
+                const cpfComplete = document.querySelector('input[name="cpf_type"][value="complete"]:checked');
+                const cpfPartial = document.querySelector('input[name="cpf_type"][value="partial"]:checked');
+                
+                if (!cpf) {
+                    isValid = false;
+                    errorMessage = 'Por favor, insira um CPF válido.';
+                } else if (!cpfComplete && !cpfPartial) {
+                    isValid = false;
+                    errorMessage = 'Por favor, selecione se o CPF é completo ou parcial.';
+                } else if (cpfComplete && cpf.length !== 11) {
+                    isValid = false;
+                    errorMessage = 'CPF completo deve conter exatamente 11 dígitos.';
+                } else if (cpfPartial && cpf.length !== 6) {
+                    isValid = false;
+                    errorMessage = 'CPF parcial deve conter exatamente 6 dígitos.';
+                }
+            }
+            // Validate PJ (CNPJ)
+            else {
+                const cnpj = document.getElementById('cnpj').value.replace(/\D/g, '');
+                const cnpjComplete = document.querySelector('input[name="cnpj_type"][value="complete"]:checked');
+                const cnpjPartial = document.querySelector('input[name="cnpj_type"][value="partial"]:checked');
+                
+                if (!cnpj) {
+                    isValid = false;
+                    errorMessage = 'Por favor, insira um CNPJ válido.';
+                } else if (!cnpjComplete && !cnpjPartial) {
+                    isValid = false;
+                    errorMessage = 'Por favor, selecione se o CNPJ é completo ou parcial.';
+                } else if (cnpjComplete && cnpj.length !== 14) {
+                    isValid = false;
+                    errorMessage = 'CNPJ completo deve conter exatamente 14 dígitos.';
+                } else if (cnpjPartial && cnpj.length !== 7) {
+                    isValid = false;
+                    errorMessage = 'CNPJ parcial deve conter exatamente 7 dígitos.';
+                }
+            }
+
+            if (!isValid) {
+                e.preventDefault();
+                alert(errorMessage);
+                return;
+            }
+
+            document.getElementById('step1').classList.remove('active');
+            document.getElementById('step1').classList.add('completed');
+            document.getElementById('step2').classList.add('active');
+        });
+
+
+        // Clear Graph Function
+        function clearGraph() {
+            const confirmed = window.confirm("Tem certeza de que deseja reiniciar a busca e limpar o relacionamento? Esta ação não pode ser desfeita.");
+
+            if (!confirmed) {
+                return;
+            }
+
+            fetch("/clear_graph", { 
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ action: "clear_everything" })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    const graphDisplayArea = document.getElementById("graph-display-area");
+                    graphDisplayArea.innerHTML = "";
+                    document.getElementById("graph-legend").style.display = "none";
+                    
+                    document.getElementById('step1').classList.remove('completed');
+                    document.getElementById('step2').classList.remove('active', 'completed');
+                    document.getElementById('step1').classList.add('active');
+
+                    alert("Relacionamento reiniciado com sucesso!");
+                } else {
+                    alert(data.message || "Erro ao reiniciar o relacionamento.");
+                }
+            })
+            .catch(error => {
+                console.error("Erro ao reiniciar o relacionamento:", error);
+                alert("Erro ao reiniciar o relacionamento. Tente novamente.");
+            });
+        }
+
+        // Data Preservation
+        const form = document.querySelector('form[action="/user_input_analysis?submitted=true"]');
+        const formData = {};
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedData = localStorage.getItem('unsavedFormData_' + window.location.pathname);
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                if (Object.keys(data).length > 0 && confirm('Encontramos dados não enviados de sua última sessão nesta página. Deseja restaurá-los?')) {
+                    Object.keys(data).forEach(key => {
+                        const elements = form.querySelectorAll(`[name="${key}"]`);
+                        elements.forEach(element => {
+                            if (element.type === 'checkbox' || element.type === 'radio') {
+                                element.checked = (element.value === data[key]);
+                            } else {
+                                element.value = data[key] || '';
+                                
+                                if (key === 'node_type' && data[key] === 'PF') {
+                                    document.getElementById('cpf').disabled = false;
+                                    document.querySelectorAll('input[name="cpf_type"]').forEach(r => r.disabled = false);
+                                    document.querySelector('.document-field:first-child').classList.add('active');
+                                } else if (key === 'node_type' && data[key] === 'PJ') {
+                                    document.getElementById('cnpj').disabled = false;
+                                    document.querySelectorAll('input[name="cnpj_type"]').forEach(r => r.disabled = false);
+                                    document.querySelector('.document-field:last-child').classList.add('active');
+                                }
+                            }
+                        });
+                    });
+                    Object.assign(formData, data);
+                } else {
+                    localStorage.removeItem('unsavedFormData_' + window.location.pathname);
+                }
+            }
+        });
+
+        form.querySelectorAll('input, select, textarea').forEach(element => {
+            element.addEventListener('input', () => {
+                formData[element.name] = element.type === 'checkbox' || element.type === 'radio' ? 
+                    (element.checked ? element.value : undefined) : element.value;
+                localStorage.setItem('unsavedFormData_' + window.location.pathname, JSON.stringify(formData));
+            });
+        });
+
+        form.addEventListener('submit', () => {
+            localStorage.removeItem('unsavedFormData_' + window.location.pathname);
+        });
+    </script>
+</body>
+</html>

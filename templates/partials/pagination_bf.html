@@ -1,0 +1,8 @@
+<div class="pagination">
+    {% if page > 1 %}
+        <a href="#" class="pagination-bolsa-link" data-page="{{ page-1 }}">&#60; Anterior</a>
+    {% endif %}
+    {% if has_next_bf %}
+        <a href="#" class="pagination-bolsa-link" data-page="{{ page+1 }}">Próximo &#62;</a>
+    {% endif %}
+</div>
